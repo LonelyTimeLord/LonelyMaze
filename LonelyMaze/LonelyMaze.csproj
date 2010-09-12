@@ -35,10 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sfmlnet-graphics">
-      <HintPath>..\..\..\SFML .NET\sfmlnet-graphics.dll</HintPath>
+      <HintPath>..\..\SFML\sfmlnet-graphics.dll</HintPath>
     </Reference>
     <Reference Include="sfmlnet-window">
-      <HintPath>..\..\..\SFML .NET\sfmlnet-window.dll</HintPath>
+      <HintPath>..\..\SFML\sfmlnet-window.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
