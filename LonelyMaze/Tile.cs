@@ -16,6 +16,9 @@ namespace LonelyMaze
 
         public void Draw(RenderWindow window, int x, int y)
         {
+            if (mySprite == null)
+                return;
+
             mySprite.Position = new Vector2(x, y);
             window.Draw(mySprite);
         }
