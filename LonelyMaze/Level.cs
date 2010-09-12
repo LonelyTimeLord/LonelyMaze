@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using SFML.Graphics;
 
@@ -6,9 +7,11 @@ namespace LonelyMaze
 {
     class Level
     {
-        private Image wallimage, floorimage, spawnimage;
+        private Image wallimage, floorimage, spawnimage, playerimage;
+        private Sprite wallsprite, floorsprite, spawnsprite;
         private List<Tile> myTiles;
         private int myHeight, myWidth, myTileWidth, myTileHeight;
+        private Player myPlayer;
 
         public Level(int xTiles, int yTiles, int TileWidth, int TileHeight)
         {
@@ -22,10 +25,16 @@ namespace LonelyMaze
             {
                 myTiles.Add(new Tile());
             }
+            
+            wallimage = Util.LoadImage(@"resources\solid.png");
+            wallsprite = new Sprite(wallimage);
+            floorimage = Util.LoadImage(@"resources\floor.png");
+            floorsprite = new Sprite(floorimage);
+            spawnimage = Util.LoadImage(@"resources\spawn.png");
+            spawnsprite = new Sprite(spawnimage);
+            playerimage = Util.LoadImage(@"resources\player.png");
 
-            wallimage = new Image(@"resources\solid.png");
-            floorimage = new Image(@"resources\floor.png");
-            spawnimage = new Image(@"resources\spawn.png");
+            myPlayer = new Player(new Sprite(playerimage), 0, 0);
         }
 
         public Tile GetTile(int x, int y)
@@ -35,7 +44,13 @@ namespace LonelyMaze
 
         public void LoadFromFile(string filepath)
         {
-            Image LevelImage = new Image(filepath);
+            bool failed;
+            Image LevelImage = Util.LoadImage(filepath, out failed);
+
+            if (failed)
+            {
+                return;
+            }
 
             for (int x = 0; x < LevelImage.Width; x++)
             {
@@ -46,17 +61,18 @@ namespace LonelyMaze
                     if (colour.Equals(Color.Black))
                     {
                         myTiles[x + myWidth*y].Solid = true;
-                        myTiles[x + myWidth * y].SetSprite(new Sprite(wallimage));
+                        myTiles[x + myWidth * y].SetSprite(wallsprite);
                     }
                     else if (colour.Equals(Color.White))
                     {
                         myTiles[x + myWidth * y].Solid = false;
-                        myTiles[x + myWidth * y].SetSprite(new Sprite(floorimage));
+                        myTiles[x + myWidth * y].SetSprite(floorsprite);
                     }
                     else if (colour.Equals(Color.Green))
                     {
                         myTiles[x + myWidth * y].Solid = false;
-                        myTiles[x + myWidth * y].SetSprite(new Sprite(spawnimage));
+                        myTiles[x + myWidth * y].SetSprite(spawnsprite);
+                        myPlayer.SetPosition(x * myTileWidth, y * myTileHeight);
                     }
                     else
                     {
@@ -81,6 +97,13 @@ namespace LonelyMaze
 
                 myTiles[i].Draw(window, x, y);
             }
+
+            myPlayer.Draw(window);
+        }
+
+        public void HandleInput(KeyEventArgs e)
+        {
+               
         }
     }
 }
