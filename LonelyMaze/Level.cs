@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.Collections.Generic;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace LonelyMaze
 {
     class Level
     {
-        private Image wallimage, floorimage, spawnimage, playerimage;
-        private Sprite wallsprite, floorsprite, spawnsprite;
+        private Image wallimage, floorimage, spawnimage, playerimage, errorimage;
+        private Sprite wallsprite, floorsprite, spawnsprite, errorsprite;
         private List<Tile> myTiles;
         private int myHeight, myWidth, myTileWidth, myTileHeight;
         private Player myPlayer;
@@ -33,6 +34,8 @@ namespace LonelyMaze
             spawnimage = Util.LoadImage(@"resources\spawn.png");
             spawnsprite = new Sprite(spawnimage);
             playerimage = Util.LoadImage(@"resources\player.png");
+            errorimage = Util.LoadImage(@"resources\error.png");
+            errorsprite = new Sprite(errorimage);
 
             myPlayer = new Player(new Sprite(playerimage), 0, 0);
         }
@@ -60,7 +63,7 @@ namespace LonelyMaze
 
                     if (colour.Equals(Color.Black))
                     {
-                        myTiles[x + myWidth*y].Solid = true;
+                        myTiles[x + myWidth * y].Solid = true;
                         myTiles[x + myWidth * y].SetSprite(wallsprite);
                     }
                     else if (colour.Equals(Color.White))
@@ -77,7 +80,7 @@ namespace LonelyMaze
                     else
                     {
                         myTiles[x + myWidth*y].Solid = false;
-                        //myTiles[((int)x + myWidth) * (int)y].SetSprite(errorSprite);
+                        myTiles[x + myWidth * y].SetSprite(errorsprite);
                     }
                 }
             }
@@ -101,9 +104,29 @@ namespace LonelyMaze
             myPlayer.Draw(window);
         }
 
+        public void Update()
+        {
+            myPlayer.Update();
+        }
+
         public void HandleInput(KeyEventArgs e)
         {
-               
+            if (e.Code == KeyCode.W && e.Code != KeyCode.S)
+            {
+                myPlayer.Move(0, -myTileHeight);
+            }
+            else if (e.Code == KeyCode.A)
+            {
+                myPlayer.Move(-myTileWidth, 0);
+            }
+            else if (e.Code == KeyCode.S && e.Code != KeyCode.W)
+            {
+                myPlayer.Move(0, myTileHeight);
+            }
+            else if (e.Code == KeyCode.D)
+            {
+                myPlayer.Move(myTileHeight, 0);
+            }
         }
     }
 }

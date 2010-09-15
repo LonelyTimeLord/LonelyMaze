@@ -35,5 +35,11 @@ namespace LonelyMaze
             mySprite.Position = new Vector2((float)myX, (float)myY);
             Window.Draw(mySprite);
         }
+
+        public void Update()
+        {
+            myX = myTargetX;
+            myY = myTargetY;
+        }
     }
 }

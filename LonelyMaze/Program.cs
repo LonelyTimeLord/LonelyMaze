@@ -20,20 +20,26 @@ namespace LonelyMaze
             window.Display();
         }
 
+        static void KeyPress(object sender, KeyEventArgs e)
+        {
+            TestLevel.HandleInput(e);
+        }
+
         static void Main(string[] args)
         {
             RenderWindow window = new RenderWindow(new VideoMode(512, 512), "LonelyMaze", Styles.Close);
 
             // init
             window.Closed += new EventHandler(OnClose);
+            window.KeyPressed += new EventHandler<KeyEventArgs>(KeyPress);
 
             TestLevel.LoadFromFile(@"resources\testmap.png");
 
             while (window.IsOpened())
             {
                 window.DispatchEvents();
-                
-                //Update
+
+                TestLevel.Update();
 
                 Render(window);
             }
