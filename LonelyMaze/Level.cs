@@ -1,5 +1,4 @@
 ﻿using System;
-//using System.Windows.Forms;
 using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.Window;
@@ -8,8 +7,8 @@ namespace LonelyMaze
 {
     class Level
     {
-        private Image wallimage, floorimage, spawnimage, playerimage, errorimage;
-        private Sprite wallsprite, floorsprite, spawnsprite, errorsprite;
+        private Image wallimage, floorimage, spawnimage, playerimage, errorimage, keyimage;
+        private Sprite wallsprite, floorsprite, spawnsprite, errorsprite, keysprite;
         private List<Tile> myTiles;
         private int myHeight, myWidth, myTileWidth, myTileHeight;
         private Player myPlayer;
@@ -22,20 +21,22 @@ namespace LonelyMaze
             myTileHeight = TileHeight;
 
             myTiles = new List<Tile>();
-            for (int i = 0; i < xTiles * yTiles; i++ )
+            for (int i = 0; i < xTiles * yTiles; i++)
             {
                 myTiles.Add(new Tile());
             }
-            
+
             wallimage = Util.LoadImage(@"resources\solid.png");
             wallsprite = new Sprite(wallimage);
             floorimage = Util.LoadImage(@"resources\floor.png");
             floorsprite = new Sprite(floorimage);
             spawnimage = Util.LoadImage(@"resources\spawn.png");
             spawnsprite = new Sprite(spawnimage);
-            playerimage = Util.LoadImage(@"resources\player.png");
             errorimage = Util.LoadImage(@"resources\error.png");
             errorsprite = new Sprite(errorimage);
+            //keyimage = Util.LoadImage(filepath);
+            //keysprite = new Sprite(keyimage);
+            playerimage = Util.LoadImage(@"resources\player.png");
 
             myPlayer = new Player(new Sprite(playerimage), 0, 0);
         }
@@ -109,24 +110,30 @@ namespace LonelyMaze
             myPlayer.Update();
         }
 
-        public void HandleInput(KeyEventArgs e)
+        public void KeyPress(KeyEventArgs e)
         {
-            if (e.Code == KeyCode.W && e.Code != KeyCode.S)
+            if (e.Code == KeyCode.W && !GetTile(myPlayer.GetX()/myTileWidth, (myPlayer.GetY()/myTileHeight) - 1).Solid)
             {
                 myPlayer.Move(0, -myTileHeight);
             }
-            else if (e.Code == KeyCode.A)
+            else if (e.Code == KeyCode.A && !GetTile((myPlayer.GetX() / myTileWidth) - 1, myPlayer.GetY() / myTileHeight).Solid)
             {
                 myPlayer.Move(-myTileWidth, 0);
             }
-            else if (e.Code == KeyCode.S && e.Code != KeyCode.W)
+            else if (e.Code == KeyCode.S && !GetTile(myPlayer.GetX() / myTileWidth, (myPlayer.GetY() / myTileHeight) + 1).Solid)
             {
                 myPlayer.Move(0, myTileHeight);
             }
-            else if (e.Code == KeyCode.D)
+            else if (e.Code == KeyCode.D && !GetTile((myPlayer.GetX() / myTileWidth) + 1, myPlayer.GetY() / myTileHeight).Solid)
             {
                 myPlayer.Move(myTileHeight, 0);
             }
+        }
+
+        public void KeyUp(KeyEventArgs e)
+        {
+            //if (e.Code == KeyCode.W || e.Code == KeyCode.A || e.Code == KeyCode.S || e.Code == KeyCode.D)
+                //myPlayer.SetPosition(myPlayer.GetRealX() / myTileWidth, myPlayer.GetRealY() / myTileHeight);
         }
     }
 }

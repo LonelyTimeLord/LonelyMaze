@@ -22,7 +22,12 @@ namespace LonelyMaze
 
         static void KeyPress(object sender, KeyEventArgs e)
         {
-            TestLevel.HandleInput(e);
+            TestLevel.KeyPress(e);
+        }
+
+        static void KeyUp(object sender, KeyEventArgs e)
+        {
+            TestLevel.KeyUp(e);
         }
 
         static void Main(string[] args)
@@ -30,8 +35,10 @@ namespace LonelyMaze
             RenderWindow window = new RenderWindow(new VideoMode(512, 512), "LonelyMaze", Styles.Close);
 
             // init
+            window.SetFramerateLimit(60);
             window.Closed += new EventHandler(OnClose);
             window.KeyPressed += new EventHandler<KeyEventArgs>(KeyPress);
+            window.KeyReleased += new EventHandler<KeyEventArgs>(KeyUp);
 
             TestLevel.LoadFromFile(@"resources\testmap.png");
 
