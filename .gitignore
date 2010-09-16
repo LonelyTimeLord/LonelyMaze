@@ -1,0 +1,5 @@
+bin/*
+obj/*
+LonelyMaze/bin/*
+LonelyMaze/obj/*
+*.suo
