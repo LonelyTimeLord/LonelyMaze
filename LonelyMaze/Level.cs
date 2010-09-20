@@ -34,8 +34,8 @@ namespace LonelyMaze
             spawnsprite = new Sprite(spawnimage);
             errorimage = Util.LoadImage(@"resources\error.png");
             errorsprite = new Sprite(errorimage);
-            //keyimage = Util.LoadImage(filepath);
-            //keysprite = new Sprite(keyimage);
+            keyimage = Util.LoadImage(@"resources\key.png");
+            keysprite = new Sprite(keyimage);
             playerimage = Util.LoadImage(@"resources\player.png");
 
             myPlayer = new Player(new Sprite(playerimage), 0, 0);
@@ -78,9 +78,14 @@ namespace LonelyMaze
                         myTiles[x + myWidth * y].SetSprite(spawnsprite);
                         myPlayer.SetPosition(x * myTileWidth, y * myTileHeight);
                     }
+                    else if (colour.Equals(Color.Blue))
+                    {
+                        myTiles[x + myWidth * y].Solid = false;
+                        myTiles[x + myWidth * y].SetSprite(keysprite);
+                    }
                     else
                     {
-                        myTiles[x + myWidth*y].Solid = false;
+                        myTiles[x + myWidth * y].Solid = false;
                         myTiles[x + myWidth * y].SetSprite(errorsprite);
                     }
                 }
